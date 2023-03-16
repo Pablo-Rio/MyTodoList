@@ -20,9 +20,16 @@
         android:hint="enter name"/>
 
     <EditText
-        android:id="@+id/updateEmail"
+        android:id="@+id/updateDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="enter email"/>
+        android:hint="enter description"/>
+
+    <EditText
+        android:id="@+id/updateDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="enter date"/>
 </LinearLayout>

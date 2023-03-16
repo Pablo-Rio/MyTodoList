@@ -17,12 +17,12 @@
 
         <TableRow>
             <TextView
-                android:text="@string/user_id"
+                android:text="@string/task_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1" />
             <EditText
-                android:id="@+id/u_id"
+                android:id="@+id/t_id"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20sp"
@@ -30,13 +30,13 @@
         </TableRow>
         <TableRow>
             <TextView
-                android:text="@string/user_name"
+                android:text="@string/task_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1" />
 
             <EditText
-                android:id="@+id/u_name"
+                android:id="@+id/t_name"
                 android:width="200dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,13 +47,28 @@
         <TableRow>
 
             <TextView
-                android:text="@string/user_email"
+                android:text="@string/task_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1" />
 
             <EditText
-                android:id="@+id/u_email"
+                android:id="@+id/t_description"
+                android:width="200dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_marginStart="20sp" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="@string/task_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1" />
+
+            <EditText
+                android:id="@+id/t_date"
                 android:width="200dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,7 +79,7 @@
     </TableLayout>
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="350sp"
+        android:layout_height="250sp"
         android:layout_marginTop="20sp">
         <ListView
             android:id="@+id/listView"

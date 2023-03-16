@@ -9,7 +9,7 @@ import android.content.DialogInterface
 import android.widget.ListView
 import androidx.appcompat.app.AlertDialog
 import iut.project.mytodolist.adapter.MyListAdapter
-import iut.project.mytodolist.classes.EmpModelClass
+import iut.project.mytodolist.classes.TaskModelClass
 import iut.project.mytodolist.handler.DatabaseHandler
 
 
@@ -20,26 +20,29 @@ class MainActivity : AppCompatActivity() {
     }
     //method for saving records in database
     fun saveRecord(view: View){
-        val id = findViewById<EditText>(R.id.u_id).text.toString()
-        val name = findViewById<EditText>(R.id.u_name).text.toString()
-        val email = findViewById<EditText>(R.id.u_email).text.toString()
+        val id = findViewById<EditText>(R.id.t_id).text.toString()
+        val name = findViewById<EditText>(R.id.t_name).text.toString()
+        val description = findViewById<EditText>(R.id.t_description).text.toString()
+        val date = findViewById<EditText>(R.id.t_date).text.toString()
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
-        if(id.trim()!="" && name.trim()!="" && email.trim()!=""){
-            val status = databaseHandler.addEmployee(
-                EmpModelClass(
+        if(id.trim()!="" && name.trim()!="" && description.trim()!=""){
+            val status = databaseHandler.addTask(
+                TaskModelClass(
                     Integer.parseInt(id),
                     name,
-                    email
+                    description,
+                    Integer.parseInt(date)
                 )
             )
             if(status > -1){
-                Toast.makeText(applicationContext,"record save",Toast.LENGTH_LONG).show()
-                findViewById<EditText>(R.id.u_id).text.clear()
-                findViewById<EditText>(R.id.u_name).text.clear()
-                findViewById<EditText>(R.id.u_email).text.clear()
+                Toast.makeText(applicationContext,"Tâche sauvegardée",Toast.LENGTH_LONG).show()
+                findViewById<EditText>(R.id.t_id).text.clear()
+                findViewById<EditText>(R.id.t_name).text.clear()
+                findViewById<EditText>(R.id.t_description).text.clear()
+                findViewById<EditText>(R.id.t_date).text.clear()
             }
         }else{
-            Toast.makeText(applicationContext,"id or name or email cannot be blank",Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext,"Nom ou description ne peuvent pas êtres vides",Toast.LENGTH_LONG).show()
         }
 
     }
@@ -47,16 +50,17 @@ class MainActivity : AppCompatActivity() {
     fun viewRecord(view: View){
         //creating the instance of DatabaseHandler class
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
-        //calling the viewEmployee method of DatabaseHandler class to read the records
-        val emp: List<EmpModelClass> = databaseHandler.viewEmployee()
-        val empArrayId = Array<String>(emp.size){"0"}
-        val empArrayName = Array<String>(emp.size){"null"}
-        val empArrayEmail = Array<String>(emp.size){"null"}
+        val t: List<TaskModelClass> = databaseHandler.viewTasks()
+        val empArrayId = Array<String>(t.size){"0"}
+        val empArrayName = Array<String>(t.size){"null"}
+        val empArrayDescription = Array<String>(t.size){"null"}
+        val empArrayDate = Array<String>(t.size){"0"}
         var index = 0
-        for(e in emp){
-            empArrayId[index] = e.userId.toString()
-            empArrayName[index] = e.userName
-            empArrayEmail[index] = e.userEmail
+        for(tas in t){
+            empArrayId[index] = tas.taskId.toString()
+            empArrayName[index] = tas.taskName
+            empArrayDescription[index] = tas.taskDescription
+            empArrayDate[index] = tas.taskDate.toString()
             index++
         }
         //creating custom ArrayAdapter
@@ -64,7 +68,8 @@ class MainActivity : AppCompatActivity() {
             this,
             empArrayId,
             empArrayName,
-            empArrayEmail
+            empArrayDescription,
+            empArrayDate
         )
         findViewById<ListView>(R.id.listView).adapter = myListAdapter
     }
@@ -77,7 +82,8 @@ class MainActivity : AppCompatActivity() {
 
         val edtId = dialogView.findViewById(R.id.updateId) as EditText
         val edtName = dialogView.findViewById(R.id.updateName) as EditText
-        val edtEmail = dialogView.findViewById(R.id.updateEmail) as EditText
+        val edtDescription = dialogView.findViewById(R.id.updateDescription) as EditText
+        val edtDate = dialogView.findViewById(R.id.updateDate) as EditText
 
         dialogBuilder.setTitle("Update Record")
         dialogBuilder.setMessage("Enter data below")
@@ -85,17 +91,18 @@ class MainActivity : AppCompatActivity() {
 
             val updateId = edtId.text.toString()
             val updateName = edtName.text.toString()
-            val updateEmail = edtEmail.text.toString()
+            val updateDescription = edtDescription.text.toString()
+            val updateDate = edtDate.text.toString()
             //creating the instance of DatabaseHandler class
             val databaseHandler: DatabaseHandler= DatabaseHandler(this)
-            if(updateId.trim()!="" && updateName.trim()!="" && updateEmail.trim()!=""){
+            if(updateId.trim()!="" && updateName.trim()!="" && updateDescription.trim()!=""){
                 //calling the updateEmployee method of DatabaseHandler class to update record
-                val status = databaseHandler.updateEmployee(EmpModelClass(Integer.parseInt(updateId),updateName, updateEmail))
+                val status = databaseHandler.updateTask(TaskModelClass(Integer.parseInt(updateId),updateName, updateDescription, Integer.parseInt(updateDate)))
                 if(status > -1){
                     Toast.makeText(applicationContext,"record update",Toast.LENGTH_LONG).show()
                 }
             }else{
-                Toast.makeText(applicationContext,"id or name or email cannot be blank",Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext,"Nom ou description ne peuvent pas êtres vides",Toast.LENGTH_LONG).show()
             }
 
         })
@@ -123,12 +130,12 @@ class MainActivity : AppCompatActivity() {
             val databaseHandler: DatabaseHandler = DatabaseHandler(this)
             if(deleteId.trim()!=""){
                 //calling the deleteEmployee method of DatabaseHandler class to delete record
-                val status = databaseHandler.deleteEmployee(EmpModelClass(Integer.parseInt(deleteId),"",""))
+                val status = databaseHandler.deleteTask(TaskModelClass(Integer.parseInt(deleteId),"","",0))
                 if(status > -1){
                     Toast.makeText(applicationContext,"record deleted",Toast.LENGTH_LONG).show()
                 }
             }else{
-                Toast.makeText(applicationContext,"id or name or email cannot be blank",Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext,"Nom ou description ne peuvent pas êtres vides",Toast.LENGTH_LONG).show()
             }
 
         })

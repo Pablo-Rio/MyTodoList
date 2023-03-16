@@ -19,9 +19,16 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
 
     <TextView
-        android:id="@+id/textViewEmail"
+        android:id="@+id/textViewDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/email"
+        android:text="@string/description"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+
+    <TextView
+        android:id="@+id/textViewDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/date"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
 </LinearLayout>
