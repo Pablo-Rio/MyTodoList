@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">MyTodoList</string>
+    <string name="save">Save</string>
+    <string name="view">View</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="user_email">User Email</string>
+    <string name="id">Id</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="user_id">User Id</string>
+    <string name="user_name">User Name</string>
 </resources>
