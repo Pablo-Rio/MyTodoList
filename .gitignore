@@ -329,3 +329,4 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+.idea/discord.xml
