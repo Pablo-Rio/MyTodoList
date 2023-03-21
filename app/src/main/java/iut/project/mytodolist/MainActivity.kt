@@ -51,26 +51,26 @@ class MainActivity : AppCompatActivity() {
     fun viewRecord(view: View){
         //creating the instance of DatabaseHandler class
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
-        val t: List<TaskModelClass> = databaseHandler.viewTasks()
-        val empArrayId = Array<String>(t.size){"0"}
-        val empArrayName = Array<String>(t.size){"null"}
-        val empArrayDescription = Array<String>(t.size){"null"}
-        val empArrayDate = Array<String>(t.size){"0"}
+        val task: List<TaskModelClass> = databaseHandler.viewTask()
+        val taskArrayId = Array<String>(task.size){"0"}
+        val taskArrayName = Array<String>(task.size){"null"}
+        val taskArrayDescription = Array<String>(task.size){"null"}
+        val taskArrayDate = Array<String>(task.size){"0"}
         var index = 0
-        for(tas in t){
-            empArrayId[index] = tas.taskId.toString()
-            empArrayName[index] = tas.taskName
-            empArrayDescription[index] = tas.taskDescription
-            empArrayDate[index] = tas.taskDate.toString()
+        for(tas in task){
+            taskArrayId[index] = tas.taskId.toString()
+            taskArrayName[index] = tas.taskName
+            taskArrayDescription[index] = tas.taskDescription
+            taskArrayDate[index] = tas.taskDate.toString()
             index++
         }
         //creating custom ArrayAdapter
         val myListAdapter = MyListAdapter(
             this,
-            empArrayId,
-            empArrayName,
-            empArrayDescription,
-            empArrayDate
+            taskArrayId,
+            taskArrayName,
+            taskArrayDescription,
+            taskArrayDate
         )
         findViewById<ListView>(R.id.listView).adapter = myListAdapter
     }
