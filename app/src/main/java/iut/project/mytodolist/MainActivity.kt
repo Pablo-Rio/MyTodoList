@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
+    private val EMPTY_TEXT = "Nom ou description ne peuvent pas êtres vides"
     //method for saving records in database
     fun saveRecord(view: View){
         val id = findViewById<EditText>(R.id.t_id).text.toString()
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.t_date).text.clear()
             }
         }else{
-            Toast.makeText(applicationContext,"Nom ou description ne peuvent pas êtres vides",Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext,EMPTY_TEXT,Toast.LENGTH_LONG).show()
         }
 
     }
@@ -102,11 +103,11 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext,"record update",Toast.LENGTH_LONG).show()
                 }
             }else{
-                Toast.makeText(applicationContext,"Nom ou description ne peuvent pas êtres vides",Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext,EMPTY_TEXT,Toast.LENGTH_LONG).show()
             }
 
         })
-        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which ->
+        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { _, _ ->
             //pass
         })
         val b = dialogBuilder.create()
@@ -135,7 +136,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext,"record deleted",Toast.LENGTH_LONG).show()
                 }
             }else{
-                Toast.makeText(applicationContext,"Nom ou description ne peuvent pas êtres vides",Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext,EMPTY_TEXT,Toast.LENGTH_LONG).show()
             }
 
         })
