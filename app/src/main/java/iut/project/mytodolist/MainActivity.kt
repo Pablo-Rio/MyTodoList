@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import android.content.DialogInterface
+import android.content.Intent
 import android.widget.ListView
 import androidx.appcompat.app.AlertDialog
 import iut.project.mytodolist.adapter.MyListAdapter
@@ -19,35 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
     private val EMPTY_TEXT = "Nom ou description ne peuvent pas êtres vides"
-    //method for saving records in database
-    var idCounter = 0
-    fun saveRecord(view: View){
-        val id = findViewById<EditText>(R.id.t_id).text.toString()
-        val name = findViewById<EditText>(R.id.t_name).text.toString()
-        val description = findViewById<EditText>(R.id.t_description).text.toString()
-        val date = findViewById<EditText>(R.id.t_date).text.toString()
-        val databaseHandler: DatabaseHandler = DatabaseHandler(this)
-        if(name.trim()!="" && description.trim()!=""){
-            val status = databaseHandler.addTask(
-                TaskModelClass(
-                    idCounter++,
-                    name,
-                    description,
-                    Integer.parseInt(date)
-                )
-            )
-            if(status > -1){
-                Toast.makeText(applicationContext,"Tâche sauvegardée",Toast.LENGTH_LONG).show()
-                findViewById<EditText>(R.id.t_id).text.clear()
-                findViewById<EditText>(R.id.t_name).text.clear()
-                findViewById<EditText>(R.id.t_description).text.clear()
-                findViewById<EditText>(R.id.t_date).text.clear()
-            }
-        }else{
-            Toast.makeText(applicationContext,EMPTY_TEXT,Toast.LENGTH_LONG).show()
-        }
 
-    }
     //method for read records from database in ListView
     fun viewRecord(view: View){
         //creating the instance of DatabaseHandler class
@@ -146,5 +119,10 @@ class MainActivity : AppCompatActivity() {
         })
         val b = dialogBuilder.create()
         b.show()
+    }
+
+    fun addTaskPage(view: View) {
+        val intent = Intent(this, AddTaskActivity::class.java)
+        startActivity(intent)
     }
 }

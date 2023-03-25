@@ -12,4 +12,6 @@
     <string name="task_name">Nom de tâche</string>
     <string name="task_description">Description de tâche</string>
     <string name="task_date">Date de tâche</string>
+    <string name="add">Ajouter une tâche</string>
+    <string name="back">Retour</string>
 </resources>

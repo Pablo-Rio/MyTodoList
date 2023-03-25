@@ -11,72 +11,6 @@
     android:orientation="vertical"
     tools:context="iut.project.mytodolist.MainActivity">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TableRow>
-            <TextView
-                android:text="@string/task_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1" />
-            <EditText
-                android:id="@+id/t_id"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20sp"
-                android:width="150dp" />
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:text="@string/task_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1" />
-
-            <EditText
-                android:id="@+id/t_name"
-                android:width="200dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_marginStart="20sp" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:text="@string/task_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1" />
-
-            <EditText
-                android:id="@+id/t_description"
-                android:width="200dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_marginStart="20sp" />
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:text="@string/task_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1" />
-
-            <EditText
-                android:id="@+id/t_date"
-                android:width="200dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_marginStart="20sp" />
-        </TableRow>
-
-    </TableLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="250sp"
@@ -95,11 +29,6 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save"
-            android:onClick="saveRecord" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/view"
             android:onClick="viewRecord" />
         <Button
@@ -113,4 +42,9 @@
             android:text="@string/delete"
             android:onClick="deleteRecord" />
     </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add"
+        android:onClick="addTaskPage" />
 </LinearLayout>
