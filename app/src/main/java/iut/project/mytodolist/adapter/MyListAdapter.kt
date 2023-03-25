@@ -19,8 +19,8 @@ class MyListAdapter(private val context: Activity, private val taskId: Array<Str
         val descriptionText = rowView.findViewById(R.id.textViewDescription) as TextView
         val dateText = rowView.findViewById(R.id.textViewDate) as TextView
 
-        idText.text = "Id: ${taskId[position]}"
-        nameText.text = "Name: ${taskName[position]}"
+        idText.text = "id: ${taskId[position]}"
+        nameText.text = "Titre: ${taskName[position]}"
         descriptionText.text = "Description: ${taskDescription[position]}"
         dateText.text = "Date: ${taskDate[position]}"
 
