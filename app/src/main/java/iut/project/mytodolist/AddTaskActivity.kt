@@ -14,17 +14,18 @@ class AddTaskActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
     }
+
     private val EMPTY_TEXT = "Nom ou description ne peuvent pas êtres vides"
 
     //method for saving records in database
     var idCounter = 0
-    fun saveRecord(view: View){
+    fun saveRecord(view: View) {
         val id = findViewById<EditText>(R.id.t_id).text.toString()
         val name = findViewById<EditText>(R.id.t_name).text.toString()
         val description = findViewById<EditText>(R.id.t_description).text.toString()
         val date = findViewById<EditText>(R.id.t_date).text.toString()
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
-        if(name.trim()!="" && description.trim()!=""){
+        if (name.trim() != "" && description.trim() != "") {
             val status = databaseHandler.addTask(
                 TaskModelClass(
                     idCounter++,
@@ -33,8 +34,8 @@ class AddTaskActivity : AppCompatActivity() {
                     Integer.parseInt(date)
                 )
             )
-            if(status > -1){
-                Toast.makeText(applicationContext,"Tâche sauvegardée", Toast.LENGTH_LONG).show()
+            if (status > -1) {
+                Toast.makeText(applicationContext, "Tâche sauvegardée", Toast.LENGTH_LONG).show()
                 findViewById<EditText>(R.id.t_id).text.clear()
                 findViewById<EditText>(R.id.t_name).text.clear()
                 findViewById<EditText>(R.id.t_description).text.clear()
@@ -44,12 +45,12 @@ class AddTaskActivity : AppCompatActivity() {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
-        }else{
-            Toast.makeText(applicationContext,EMPTY_TEXT, Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(applicationContext, EMPTY_TEXT, Toast.LENGTH_LONG).show()
         }
     }
 
-    fun backOnMainPage(view: View){
+    fun backOnMainPage(view: View) {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }

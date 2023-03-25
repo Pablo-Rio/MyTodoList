@@ -19,19 +19,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
+
+    override fun onStart() {
+        super.onStart()
+        viewRecord(this.findViewById(R.id.listView))
+    }
+
     private val EMPTY_TEXT = "Nom ou description ne peuvent pas êtres vides"
 
     //method for read records from database in ListView
-    fun viewRecord(view: View){
+    fun viewRecord(view: View) {
         //creating the instance of DatabaseHandler class
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
         val task: List<TaskModelClass> = databaseHandler.viewTask()
-        val taskArrayId = Array<String>(task.size){"0"}
-        val taskArrayName = Array<String>(task.size){"null"}
-        val taskArrayDescription = Array<String>(task.size){"null"}
-        val taskArrayDate = Array<String>(task.size){"0"}
+        val taskArrayId = Array<String>(task.size) { "0" }
+        val taskArrayName = Array<String>(task.size) { "null" }
+        val taskArrayDescription = Array<String>(task.size) { "null" }
+        val taskArrayDate = Array<String>(task.size) { "0" }
         var index = 0
-        for(tas in task){
+        for (tas in task) {
             taskArrayId[index] = tas.taskId.toString()
             taskArrayName[index] = tas.taskName
             taskArrayDescription[index] = tas.taskDescription
@@ -48,8 +54,9 @@ class MainActivity : AppCompatActivity() {
         )
         findViewById<ListView>(R.id.listView).adapter = myListAdapter
     }
+
     //method for updating records based on user id
-    fun updateRecord(view: View){
+    fun updateRecord(view: View) {
         val dialogBuilder = AlertDialog.Builder(this)
         val inflater = this.layoutInflater
         val dialogView = inflater.inflate(R.layout.update_dialog, null)
@@ -69,15 +76,23 @@ class MainActivity : AppCompatActivity() {
             val updateDescription = edtDescription.text.toString()
             val updateDate = edtDate.text.toString()
             //creating the instance of DatabaseHandler class
-            val databaseHandler: DatabaseHandler= DatabaseHandler(this)
-            if(updateId.trim()!="" && updateName.trim()!="" && updateDescription.trim()!=""){
+            val databaseHandler: DatabaseHandler = DatabaseHandler(this)
+            if (updateId.trim() != "" && updateName.trim() != "" && updateDescription.trim() != "") {
                 //calling the updateEmployee method of DatabaseHandler class to update record
-                val status = databaseHandler.updateTask(TaskModelClass(Integer.parseInt(updateId),updateName, updateDescription, Integer.parseInt(updateDate)))
-                if(status > -1){
-                    Toast.makeText(applicationContext,"record update",Toast.LENGTH_LONG).show()
+                val status = databaseHandler.updateTask(
+                    TaskModelClass(
+                        Integer.parseInt(updateId),
+                        updateName,
+                        updateDescription,
+                        Integer.parseInt(updateDate)
+                    )
+                )
+                if (status > -1) {
+                    Toast.makeText(applicationContext, "record update", Toast.LENGTH_LONG).show()
+                    viewRecord(this.findViewById(R.id.listView))
                 }
-            }else{
-                Toast.makeText(applicationContext,EMPTY_TEXT,Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(applicationContext, EMPTY_TEXT, Toast.LENGTH_LONG).show()
             }
 
         })
@@ -87,8 +102,9 @@ class MainActivity : AppCompatActivity() {
         val b = dialogBuilder.create()
         b.show()
     }
+
     //method for deleting records based on id
-    fun deleteRecord(view: View){
+    fun deleteRecord(view: View) {
         //creating AlertDialog for taking user id
         val dialogBuilder = AlertDialog.Builder(this)
         val inflater = this.layoutInflater
@@ -103,14 +119,22 @@ class MainActivity : AppCompatActivity() {
             val deleteId = dltId.text.toString()
             //creating the instance of DatabaseHandler class
             val databaseHandler: DatabaseHandler = DatabaseHandler(this)
-            if(deleteId.trim()!=""){
+            if (deleteId.trim() != "") {
                 //calling the deleteEmployee method of DatabaseHandler class to delete record
-                val status = databaseHandler.deleteTask(TaskModelClass(Integer.parseInt(deleteId),"","",0))
-                if(status > -1){
-                    Toast.makeText(applicationContext,"record deleted",Toast.LENGTH_LONG).show()
+                val status = databaseHandler.deleteTask(
+                    TaskModelClass(
+                        Integer.parseInt(deleteId),
+                        "",
+                        "",
+                        0
+                    )
+                )
+                if (status > -1) {
+                    Toast.makeText(applicationContext, "record deleted", Toast.LENGTH_LONG).show()
+                    viewRecord(this.findViewById(R.id.listView))
                 }
-            }else{
-                Toast.makeText(applicationContext,EMPTY_TEXT,Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(applicationContext, EMPTY_TEXT, Toast.LENGTH_LONG).show()
             }
 
         })
