@@ -22,9 +22,11 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
 
     override fun onCreate(db: SQLiteDatabase?) {
         //creating table with fields
-        val CREATE_TASKS_TABLE = ("CREATE TABLE " + TABLE_TASKS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
-                + KEY_DESCRIPTION + " TEXT," + KEY_DATE + " TEXT" + ")")
+        val CREATE_TASKS_TABLE = ("CREATE TABLE $TABLE_TASKS ("
+                + "$KEY_ID INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "$KEY_NAME TEXT, "
+                + "$KEY_DESCRIPTION TEXT, "
+                + "$KEY_DATE TEXT)")
         db?.execSQL(CREATE_TASKS_TABLE)
     }
 
@@ -33,19 +35,18 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         onCreate(db)
     }
     //method to insert data
-    fun addTask(task: TaskModelClass):Long{
+    fun addTask(task: TaskModelClass): Long {
         val db = this.writableDatabase
         val contentValues = ContentValues()
-        contentValues.put(KEY_ID, task.taskId) // TaskModelClass taskId
         contentValues.put(KEY_NAME, task.taskName) // TaskModelClass taskName
         contentValues.put(KEY_DESCRIPTION, task.taskDescription) // TaskModelClass taskDescription
         contentValues.put(KEY_DATE, task.taskDate) // TaskModelClass taskDate
         // Inserting Row
         val success = db.insert(TABLE_TASKS, null, contentValues)
-        //2nd argument is String containing nullColumnHack
         db.close() // Closing database connection
         return success
     }
+
     //method to read data
     fun viewTask():List<TaskModelClass> {
         val taskList:ArrayList<TaskModelClass> = ArrayList<TaskModelClass>()
