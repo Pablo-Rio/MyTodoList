@@ -57,13 +57,13 @@
                 android:layout_height="wrap_content"
                 android:layout_column="1" />
 
-            <EditText
+            <DatePicker
                 android:id="@+id/t_date"
-                android:width="200dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_marginStart="20sp" />
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner" />
+
         </TableRow>
 
     </TableLayout>

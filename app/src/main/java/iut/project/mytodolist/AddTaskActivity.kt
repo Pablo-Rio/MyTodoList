@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
 import iut.project.mytodolist.classes.TaskModelClass
@@ -22,7 +23,9 @@ class AddTaskActivity : AppCompatActivity() {
     fun saveRecord(view: View) {
         val name = findViewById<EditText>(R.id.t_name).text.toString()
         val description = findViewById<EditText>(R.id.t_description).text.toString()
-        val date = findViewById<EditText>(R.id.t_date).text.toString()
+        val date = findViewById<DatePicker>(R.id.t_date).dayOfMonth.toString() + "/" +
+                findViewById<DatePicker>(R.id.t_date).month.toString() + "/" +
+                findViewById<DatePicker>(R.id.t_date).year.toString()
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
         if (name.trim() != "" && description.trim() != "") {
             val status = databaseHandler.addTask(
@@ -30,14 +33,14 @@ class AddTaskActivity : AppCompatActivity() {
                     idCounter++,
                     name,
                     description,
-                    Integer.parseInt(date)
+                    date
                 )
             )
             if (status > -1) {
                 Toast.makeText(applicationContext, "Tâche sauvegardée", Toast.LENGTH_LONG).show()
                 findViewById<EditText>(R.id.t_name).text.clear()
                 findViewById<EditText>(R.id.t_description).text.clear()
-                findViewById<EditText>(R.id.t_date).text.clear()
+                findViewById<DatePicker>(R.id.t_date).updateDate(2021, 0, 1)
 
                 // Revenir à l'activité principale
                 val intent = Intent(this, MainActivity::class.java)

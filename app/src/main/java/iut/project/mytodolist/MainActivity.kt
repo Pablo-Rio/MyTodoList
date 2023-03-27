@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
                         Integer.parseInt(id.substring(1, id.length)),
                         updateName,
                         updateDescription,
-                        Integer.parseInt(updateDate)
+                        updateDate
                     )
                 )
                 if (status > -1) {
@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                 Integer.parseInt(id),
                 "",
                 "",
-                0
+                ""
             )
         )
         if (status > -1) {

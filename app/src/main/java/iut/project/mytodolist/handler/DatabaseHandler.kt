@@ -64,13 +64,13 @@ class DatabaseHandler(context: Context) :
         var taskId: Int
         var taskName: String
         var taskDescription: String
-        var taskDate: Int
+        var taskDate: String
         if (cursor.moveToFirst()) {
             do {
                 taskId = cursor.getInt(cursor.getColumnIndex("id"))
                 taskName = cursor.getString(cursor.getColumnIndex("name"))
                 taskDescription = cursor.getString(cursor.getColumnIndex("description"))
-                taskDate = cursor.getInt(cursor.getColumnIndex("date"))
+                taskDate = cursor.getString(cursor.getColumnIndex("date"))
                 val task = TaskModelClass(
                     taskId = taskId,
                     taskName = taskName,

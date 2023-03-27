@@ -4,5 +4,5 @@ class TaskModelClass(
     var taskId: Int,
     val taskName: String,
     val taskDescription: String,
-    val taskDate: Int
+    val taskDate: String
 )
