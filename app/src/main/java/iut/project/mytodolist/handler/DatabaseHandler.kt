@@ -9,7 +9,8 @@ import android.database.sqlite.SQLiteException
 import iut.project.mytodolist.classes.TaskModelClass
 
 //creating the database logic, extending the SQLiteOpenHelper base class
-class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class DatabaseHandler(context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
         private val DATABASE_VERSION = 1
         private val DATABASE_NAME = "TaskDatabase"
@@ -34,6 +35,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         db!!.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS)
         onCreate(db)
     }
+
     //method to insert data
     fun addTask(task: TaskModelClass): Long {
         val db = this.writableDatabase
@@ -48,8 +50,8 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     //method to read data
-    fun viewTask():List<TaskModelClass> {
-        val taskList:ArrayList<TaskModelClass> = ArrayList<TaskModelClass>()
+    fun viewTask(): List<TaskModelClass> {
+        val taskList: ArrayList<TaskModelClass> = ArrayList<TaskModelClass>()
         val selectQuery = "SELECT  * FROM $TABLE_TASKS"
         val db = this.readableDatabase
         var cursor: Cursor? = null
@@ -69,12 +71,18 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
                 taskName = cursor.getString(cursor.getColumnIndex("name"))
                 taskDescription = cursor.getString(cursor.getColumnIndex("description"))
                 taskDate = cursor.getInt(cursor.getColumnIndex("date"))
-                val task = TaskModelClass(taskId = taskId, taskName = taskName, taskDescription = taskDescription, taskDate = taskDate)
+                val task = TaskModelClass(
+                    taskId = taskId,
+                    taskName = taskName,
+                    taskDescription = taskDescription,
+                    taskDate = taskDate
+                )
                 taskList.add(task)
             } while (cursor.moveToNext())
         }
         return taskList
     }
+
     //method to update data
     fun updateTask(task: TaskModelClass): Int {
         val db = this.writableDatabase
@@ -84,18 +92,19 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         contentValues.put(KEY_DESCRIPTION, task.taskDescription) // TaskModelClass taskDescription
         contentValues.put(KEY_DATE, task.taskDate) // TaskModelClass taskDate
         // Updating Row
-        val success = db.update(TABLE_TASKS, contentValues,"id="+task.taskId,null)
+        val success = db.update(TABLE_TASKS, contentValues, "id=" + task.taskId, null)
         //2nd argument is String containing nullColumnHack
         db.close() // Closing database connection
         return success
     }
+
     //method to delete data
     fun deleteTask(task: TaskModelClass): Int {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.put(KEY_ID, task.taskId) // TaskModelClass taskId
         // Deleting Row
-        val success = db.delete(TABLE_TASKS,"id="+task.taskId,null)
+        val success = db.delete(TABLE_TASKS, "id=" + task.taskId, null)
         //2nd argument is String containing nullColumnHack
         db.close() // Closing database connection
         return success

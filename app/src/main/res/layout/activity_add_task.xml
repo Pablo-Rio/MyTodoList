@@ -16,6 +16,7 @@
         android:layout_height="wrap_content">
 
         <TableRow>
+
             <TextView
                 android:text="@string/task_name"
                 android:layout_width="wrap_content"
@@ -47,7 +48,9 @@
                 android:layout_column="2"
                 android:layout_marginStart="20sp" />
         </TableRow>
+
         <TableRow>
+
             <TextView
                 android:text="@string/task_date"
                 android:layout_width="wrap_content"
@@ -64,11 +67,13 @@
         </TableRow>
 
     </TableLayout>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save"
         android:onClick="saveRecord" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

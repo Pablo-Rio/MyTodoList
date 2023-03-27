@@ -8,8 +8,13 @@ import android.widget.Button
 import android.widget.TextView
 import iut.project.mytodolist.R
 
-class MyListAdapter(private val context: Activity, private val taskId: Array<String>, private val taskName: Array<String>, private val taskDescription: Array<String>, private val taskDate: Array<String>)
-    : ArrayAdapter<String>(context, R.layout.custom_list, taskId) {
+class MyListAdapter(
+    private val context: Activity,
+    private val taskId: Array<String>,
+    private val taskName: Array<String>,
+    private val taskDescription: Array<String>,
+    private val taskDate: Array<String>
+) : ArrayAdapter<String>(context, R.layout.custom_list, taskId) {
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = context.layoutInflater
@@ -29,7 +34,12 @@ class MyListAdapter(private val context: Activity, private val taskId: Array<Str
         dateText.text = "Date: ${taskDate[position]}"
 
         // Liste qui contient l'id, le nom, la description et la date de la tâche
-        val taskList = listOf(taskId[position], taskName[position], taskDescription[position], taskDate[position])
+        val taskList = listOf(
+            taskId[position],
+            taskName[position],
+            taskDescription[position],
+            taskDate[position]
+        )
 
         boutonDelete.contentDescription = taskId[position]
         boutonEdit.contentDescription = taskList.toString()

@@ -79,7 +79,8 @@ class MainActivity : AppCompatActivity() {
         val date = view.contentDescription.toString().split(",")[3]
         // Retire le premier caractère qui est un espace et le dernier qui est un ]
 
-        edtDate.text = Editable.Factory.getInstance().newEditable(date.substring(1, date.length - 1))
+        edtDate.text =
+            Editable.Factory.getInstance().newEditable(date.substring(1, date.length - 1))
 
         dialogBuilder.setTitle("Édition de la tâche")
         dialogBuilder.setMessage("Modifier les champs souhaités")
@@ -102,7 +103,8 @@ class MainActivity : AppCompatActivity() {
                     )
                 )
                 if (status > -1) {
-                    Toast.makeText(applicationContext, "Modification réussie", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Modification réussie", Toast.LENGTH_LONG)
+                        .show()
                     viewRecord(this.findViewById(R.id.listView))
                 }
             } else {

@@ -10,19 +10,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="enter name"/>
+        android:hint="enter name" />
 
     <EditText
         android:id="@+id/updateDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="enter description"/>
+        android:hint="enter description" />
 
     <EditText
         android:id="@+id/updateDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="enter date"/>
+        android:hint="enter date" />
 </LinearLayout>
