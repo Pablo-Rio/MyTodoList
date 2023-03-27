@@ -15,7 +15,9 @@ class MyListAdapter(private val context: Activity, private val taskId: Array<Str
         val inflater = context.layoutInflater
         val rowView = inflater.inflate(R.layout.custom_list, null, true)
 
-        val bouton = rowView.findViewById(R.id.deleteButton) as Button
+        val boutonDelete = rowView.findViewById(R.id.deleteButton) as Button
+        val boutonEdit = rowView.findViewById(R.id.editButton) as Button
+
         val idText = rowView.findViewById(R.id.textViewId) as TextView
         val nameText = rowView.findViewById(R.id.textViewName) as TextView
         val descriptionText = rowView.findViewById(R.id.textViewDescription) as TextView
@@ -25,7 +27,12 @@ class MyListAdapter(private val context: Activity, private val taskId: Array<Str
         nameText.text = "Titre: ${taskName[position]}"
         descriptionText.text = "Description: ${taskDescription[position]}"
         dateText.text = "Date: ${taskDate[position]}"
-        bouton.contentDescription = idText.text.toString()
+
+        // Liste qui contient l'id, le nom, la description et la date de la tâche
+        val taskList = listOf(taskId[position], taskName[position], taskDescription[position], taskDate[position])
+
+        boutonDelete.contentDescription = taskId[position]
+        boutonEdit.contentDescription = taskList.toString()
 
         return rowView
     }

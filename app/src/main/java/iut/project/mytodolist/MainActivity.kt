@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import android.content.DialogInterface
 import android.content.Intent
+import android.text.Editable
 import android.widget.ListView
 import androidx.appcompat.app.AlertDialog
 import iut.project.mytodolist.adapter.MyListAdapter
@@ -62,33 +63,46 @@ class MainActivity : AppCompatActivity() {
         val dialogView = inflater.inflate(R.layout.update_dialog, null)
         dialogBuilder.setView(dialogView)
 
-        val edtId = dialogView.findViewById(R.id.updateId) as EditText
         val edtName = dialogView.findViewById(R.id.updateName) as EditText
         val edtDescription = dialogView.findViewById(R.id.updateDescription) as EditText
         val edtDate = dialogView.findViewById(R.id.updateDate) as EditText
 
-        dialogBuilder.setTitle("Update Record")
-        dialogBuilder.setMessage("Enter data below")
-        dialogBuilder.setPositiveButton("Update", DialogInterface.OnClickListener { _, _ ->
+        val id = view.contentDescription.toString().split(",")[0]
 
-            val updateId = edtId.text.toString()
+        val name = view.contentDescription.toString().split(",")[1]
+        // Retire le premier caractère qui est un espace
+        edtName.text = Editable.Factory.getInstance().newEditable(name.substring(1))
+
+        val description = view.contentDescription.toString().split(",")[2]
+        edtDescription.text = Editable.Factory.getInstance().newEditable(description.substring(1))
+
+        val date = view.contentDescription.toString().split(",")[3]
+        // Retire le premier caractère qui est un espace et le dernier qui est un ]
+
+        edtDate.text = Editable.Factory.getInstance().newEditable(date.substring(1, date.length - 1))
+
+        dialogBuilder.setTitle("Édition de la tâche")
+        dialogBuilder.setMessage("Modifier les champs souhaités")
+        dialogBuilder.setPositiveButton("Modifier", DialogInterface.OnClickListener { _, _ ->
+
             val updateName = edtName.text.toString()
             val updateDescription = edtDescription.text.toString()
             val updateDate = edtDate.text.toString()
+
             //creating the instance of DatabaseHandler class
             val databaseHandler: DatabaseHandler = DatabaseHandler(this)
-            if (updateId.trim() != "" && updateName.trim() != "" && updateDescription.trim() != "") {
+            if (updateName.trim() != "" && updateDescription.trim() != "") {
                 //calling the updateEmployee method of DatabaseHandler class to update record
                 val status = databaseHandler.updateTask(
                     TaskModelClass(
-                        Integer.parseInt(updateId),
+                        Integer.parseInt(id.substring(1, id.length)),
                         updateName,
                         updateDescription,
                         Integer.parseInt(updateDate)
                     )
                 )
                 if (status > -1) {
-                    Toast.makeText(applicationContext, "record update", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Modification réussie", Toast.LENGTH_LONG).show()
                     viewRecord(this.findViewById(R.id.listView))
                 }
             } else {
@@ -96,7 +110,7 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { _, _ ->
+        dialogBuilder.setNegativeButton("Annuler", DialogInterface.OnClickListener { _, _ ->
             //pass
         })
         val b = dialogBuilder.create()
@@ -105,9 +119,7 @@ class MainActivity : AppCompatActivity() {
 
     //method for deleting records based on id
     fun deleteRecord(view: View) {
-        // L'id du bouton à supprimer
-        // Le résultat de bouton.contentDescription est "id: 1" par exemple, on veut juste le 1
-        val id = view.contentDescription.split(" ")[1]
+        val id = view.contentDescription.toString()
         //creating the instance of DatabaseHandler class
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
         val status = databaseHandler.deleteTask(
@@ -119,7 +131,7 @@ class MainActivity : AppCompatActivity() {
             )
         )
         if (status > -1) {
-            Toast.makeText(applicationContext, "record deleted", Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, "Tâche terminée, Bravo !", Toast.LENGTH_LONG).show()
             viewRecord(this.findViewById(R.id.listView))
         }
     }
