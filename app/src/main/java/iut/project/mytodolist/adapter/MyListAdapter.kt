@@ -4,6 +4,7 @@ import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.TextView
 import iut.project.mytodolist.R
 
@@ -14,6 +15,7 @@ class MyListAdapter(private val context: Activity, private val taskId: Array<Str
         val inflater = context.layoutInflater
         val rowView = inflater.inflate(R.layout.custom_list, null, true)
 
+        val bouton = rowView.findViewById(R.id.deleteButton) as Button
         val idText = rowView.findViewById(R.id.textViewId) as TextView
         val nameText = rowView.findViewById(R.id.textViewName) as TextView
         val descriptionText = rowView.findViewById(R.id.textViewDescription) as TextView
@@ -23,6 +25,7 @@ class MyListAdapter(private val context: Activity, private val taskId: Array<Str
         nameText.text = "Titre: ${taskName[position]}"
         descriptionText.text = "Description: ${taskDescription[position]}"
         dateText.text = "Date: ${taskDate[position]}"
+        bouton.contentDescription = idText.text.toString()
 
         return rowView
     }

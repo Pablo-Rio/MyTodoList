@@ -105,44 +105,23 @@ class MainActivity : AppCompatActivity() {
 
     //method for deleting records based on id
     fun deleteRecord(view: View) {
-        //creating AlertDialog for taking user id
-        val dialogBuilder = AlertDialog.Builder(this)
-        val inflater = this.layoutInflater
-        val dialogView = inflater.inflate(R.layout.delete_dialog, null)
-        dialogBuilder.setView(dialogView)
-
-        val dltId = dialogView.findViewById(R.id.deleteId) as EditText
-        dialogBuilder.setTitle("Delete Record")
-        dialogBuilder.setMessage("Enter id below")
-        dialogBuilder.setPositiveButton("Delete", DialogInterface.OnClickListener { _, _ ->
-
-            val deleteId = dltId.text.toString()
-            //creating the instance of DatabaseHandler class
-            val databaseHandler: DatabaseHandler = DatabaseHandler(this)
-            if (deleteId.trim() != "") {
-                //calling the deleteEmployee method of DatabaseHandler class to delete record
-                val status = databaseHandler.deleteTask(
-                    TaskModelClass(
-                        Integer.parseInt(deleteId),
-                        "",
-                        "",
-                        0
-                    )
-                )
-                if (status > -1) {
-                    Toast.makeText(applicationContext, "record deleted", Toast.LENGTH_LONG).show()
-                    viewRecord(this.findViewById(R.id.listView))
-                }
-            } else {
-                Toast.makeText(applicationContext, EMPTY_TEXT, Toast.LENGTH_LONG).show()
-            }
-
-        })
-        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener { _, _ ->
-            //pass
-        })
-        val b = dialogBuilder.create()
-        b.show()
+        // L'id du bouton à supprimer
+        // Le résultat de bouton.contentDescription est "id: 1" par exemple, on veut juste le 1
+        val id = view.contentDescription.split(" ")[1]
+        //creating the instance of DatabaseHandler class
+        val databaseHandler: DatabaseHandler = DatabaseHandler(this)
+        val status = databaseHandler.deleteTask(
+            TaskModelClass(
+                Integer.parseInt(id),
+                "",
+                "",
+                0
+            )
+        )
+        if (status > -1) {
+            Toast.makeText(applicationContext, "record deleted", Toast.LENGTH_LONG).show()
+            viewRecord(this.findViewById(R.id.listView))
+        }
     }
 
     fun addTaskPage(view: View) {

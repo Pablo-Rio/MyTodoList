@@ -20,7 +20,7 @@ class AddTaskActivity : AppCompatActivity() {
     //method for saving records in database
     var idCounter = 0
     fun saveRecord(view: View) {
-        val id = findViewById<EditText>(R.id.t_id).text.toString()
+        findViewById<EditText>(R.id.t_id).text.toString()
         val name = findViewById<EditText>(R.id.t_name).text.toString()
         val description = findViewById<EditText>(R.id.t_description).text.toString()
         val date = findViewById<EditText>(R.id.t_date).text.toString()
