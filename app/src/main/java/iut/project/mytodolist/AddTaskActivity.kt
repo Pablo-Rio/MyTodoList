@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.CheckBox
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
@@ -33,14 +34,18 @@ class AddTaskActivity : AppCompatActivity() {
         }  else {
             "$day/$month/$year"
         }
+
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
+
+        val noDate = findViewById<CheckBox>(R.id.checkbox_date).isChecked
+
         if (name.trim() != "" && description.trim() != "") {
             val status = databaseHandler.addTask(
                 TaskModelClass(
                     idCounter++,
                     name,
                     description,
-                    date
+                    if (noDate) "" else date
                 )
             )
             if (status > -1) {
@@ -57,6 +62,7 @@ class AddTaskActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, EMPTY_TEXT, Toast.LENGTH_LONG).show()
         }
     }
+
 
     fun backOnMainPage(view: View) {
         val intent = Intent(this, MainActivity::class.java)
