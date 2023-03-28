@@ -8,9 +8,9 @@
     <string name="description">Description</string>
     <string name="date">Date</string>
     <string name="task_id">Id de tâche</string>
-    <string name="task_name">Nom de tâche</string>
-    <string name="task_description">Description de tâche</string>
-    <string name="task_date">Date de tâche</string>
+    <string name="task_name">Titre</string>
+    <string name="task_description">Description</string>
+    <string name="task_dateOption">Ne pas mettre de date</string>
     <string name="add">Ajouter une tâche</string>
     <string name="back">Retour</string>
 </resources>
