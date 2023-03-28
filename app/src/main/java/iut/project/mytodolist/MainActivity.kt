@@ -8,17 +8,20 @@ import android.widget.Toast
 import android.content.DialogInterface
 import android.content.Intent
 import android.text.Editable
+import android.widget.DatePicker
 import android.widget.ListView
 import androidx.appcompat.app.AlertDialog
 import iut.project.mytodolist.adapter.MyListAdapter
 import iut.project.mytodolist.classes.TaskModelClass
 import iut.project.mytodolist.handler.DatabaseHandler
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Locale.setDefault(Locale.FRANCE)
     }
 
     override fun onStart() {
@@ -57,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //method for updating records based on user id
+    //method for updating records based on user id
     fun updateRecord(view: View) {
         val dialogBuilder = AlertDialog.Builder(this)
         val inflater = this.layoutInflater
@@ -65,22 +69,23 @@ class MainActivity : AppCompatActivity() {
 
         val edtName = dialogView.findViewById(R.id.updateName) as EditText
         val edtDescription = dialogView.findViewById(R.id.updateDescription) as EditText
-        val edtDate = dialogView.findViewById(R.id.updateDate) as EditText
+        val edtDate = dialogView.findViewById(R.id.updateDate) as DatePicker
 
         val id = view.contentDescription.toString().split(",")[0]
 
         val name = view.contentDescription.toString().split(",")[1]
-        // Retire le premier caractère qui est un espace
         edtName.text = Editable.Factory.getInstance().newEditable(name.substring(1))
 
         val description = view.contentDescription.toString().split(",")[2]
         edtDescription.text = Editable.Factory.getInstance().newEditable(description.substring(1))
 
-        val date = view.contentDescription.toString().split(",")[3]
-        // Retire le premier caractère qui est un espace et le dernier qui est un ]
+        val date = view.contentDescription.toString().split(",")[3].substring(1, view.contentDescription.toString().split(",")[3].length - 1)
+        val day = date.split("/")[0].toInt()
+        val month = date.split("/")[1].toInt() - 1
+        val year = date.split("/")[2].toInt()
 
-        edtDate.text =
-            Editable.Factory.getInstance().newEditable(date.substring(1, date.length - 1))
+
+        edtDate.init(year, month, day, null)
 
         dialogBuilder.setTitle("Édition de la tâche")
         dialogBuilder.setMessage("Modifier les champs souhaités")
@@ -88,7 +93,15 @@ class MainActivity : AppCompatActivity() {
 
             val updateName = edtName.text.toString()
             val updateDescription = edtDescription.text.toString()
-            val updateDate = edtDate.text.toString()
+            val updateDay = edtDate.dayOfMonth
+            val updateMonth = edtDate.month + 1
+            val updateYear = edtDate.year
+
+            val updateDate = if (updateMonth < 10) {
+                "$updateDay/0$updateMonth/$updateYear"
+            }  else {
+                "$updateDay/$updateMonth/$updateYear"
+            }
 
             //creating the instance of DatabaseHandler class
             val databaseHandler: DatabaseHandler = DatabaseHandler(this)
@@ -118,6 +131,7 @@ class MainActivity : AppCompatActivity() {
         val b = dialogBuilder.create()
         b.show()
     }
+
 
     //method for deleting records based on id
     fun deleteRecord(view: View) {

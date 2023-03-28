@@ -23,9 +23,16 @@ class AddTaskActivity : AppCompatActivity() {
     fun saveRecord(view: View) {
         val name = findViewById<EditText>(R.id.t_name).text.toString()
         val description = findViewById<EditText>(R.id.t_description).text.toString()
-        val date = findViewById<DatePicker>(R.id.t_date).dayOfMonth.toString() + "/" +
-                findViewById<DatePicker>(R.id.t_date).month.toString() + "/" +
-                findViewById<DatePicker>(R.id.t_date).year.toString()
+
+        val day = findViewById<DatePicker>(R.id.t_date).dayOfMonth
+        val month = findViewById<DatePicker>(R.id.t_date).month + 1
+        val year = findViewById<DatePicker>(R.id.t_date).year
+
+        val date = if (month < 10) {
+            "$day/0$month/$year"
+        }  else {
+            "$day/$month/$year"
+        }
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
         if (name.trim() != "" && description.trim() != "") {
             val status = databaseHandler.addTask(

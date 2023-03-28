@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CustomDatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
+        <item name="android:spinnersShown">true</item>
+        <item name="android:calendarViewShown">false</item>
+    </style>
+</resources>

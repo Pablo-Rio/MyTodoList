@@ -19,10 +19,11 @@
         android:ems="10"
         android:hint="enter description" />
 
-    <EditText
+    <DatePicker
         android:id="@+id/updateDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="enter date" />
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:datePickerStyle="@style/CustomDatePickerStyle" />
 </LinearLayout>
