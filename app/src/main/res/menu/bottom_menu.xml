@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/todo"
+        android:icon="@drawable/baseline_architecture_24"
+        android:title="À faire" />
+
+    <item
+        android:id="@+id/late"
+        android:icon="@drawable/baseline_assignment_late_24"
+        android:title="En retard" />
+
+    <item
+        android:title=""
+        android:checkable="false"
+        android:enabled="false" />
+
+    <item
+        android:id="@+id/done"
+        android:icon="@drawable/baseline_done_24"
+        android:title="Fait" />
+
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="Paramètres" />
+
+</menu>
