@@ -80,12 +80,16 @@ class MainActivity : AppCompatActivity() {
         edtDescription.text = Editable.Factory.getInstance().newEditable(description.substring(1))
 
         val date = view.contentDescription.toString().split(",")[3].substring(1, view.contentDescription.toString().split(",")[3].length - 1)
-        val day = date.split("/")[0].toInt()
-        val month = date.split("/")[1].toInt() - 1
-        val year = date.split("/")[2].toInt()
+        if (date == "") {
+            edtDate.visibility = View.GONE
+        } else {
+            edtDate.visibility = View.VISIBLE
+            val day = date.split("/")[0].toInt()
+            val month = date.split("/")[1].toInt() - 1
+            val year = date.split("/")[2].toInt()
 
-
-        edtDate.init(year, month, day, null)
+            edtDate.init(year, month, day, null)
+        }
 
         dialogBuilder.setTitle("Édition de la tâche")
         dialogBuilder.setMessage("Modifier les champs souhaités")
@@ -93,14 +97,19 @@ class MainActivity : AppCompatActivity() {
 
             val updateName = edtName.text.toString()
             val updateDescription = edtDescription.text.toString()
-            val updateDay = edtDate.dayOfMonth
-            val updateMonth = edtDate.month + 1
-            val updateYear = edtDate.year
+            val updateDate: String
+            if (edtDate.visibility == View.VISIBLE) {
+                val updateDay = edtDate.dayOfMonth
+                val updateMonth = edtDate.month + 1
+                val updateYear = edtDate.year
 
-            val updateDate = if (updateMonth < 10) {
-                "$updateDay/0$updateMonth/$updateYear"
-            }  else {
-                "$updateDay/$updateMonth/$updateYear"
+                updateDate = if (updateMonth < 10) {
+                    "$updateDay/0$updateMonth/$updateYear"
+                }  else {
+                    "$updateDay/$updateMonth/$updateYear"
+                }
+            } else {
+                updateDate = ""
             }
 
             //creating the instance of DatabaseHandler class
