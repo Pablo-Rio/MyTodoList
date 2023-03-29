@@ -15,6 +15,12 @@ class AddTaskActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
+
+        val checkBox = findViewById<CheckBox>(R.id.checkbox_date)
+
+        checkBox.setOnCheckedChangeListener { _, isChecked ->
+            findViewById<DatePicker>(R.id.t_date).isEnabled = !isChecked
+        }
     }
 
     private val EMPTY_TEXT = "Nom ou description ne peuvent pas êtres vides"
@@ -62,7 +68,6 @@ class AddTaskActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, EMPTY_TEXT, Toast.LENGTH_LONG).show()
         }
     }
-
 
     fun backOnMainPage(view: View) {
         val intent = Intent(this, MainActivity::class.java)
