@@ -1,16 +1,15 @@
 package iut.project.mytodolist
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
-import android.widget.Toast
 import android.content.DialogInterface
 import android.content.Intent
 import android.text.Editable
-import android.widget.DatePicker
-import android.widget.ListView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import iut.project.mytodolist.adapter.MyListAdapter
 import iut.project.mytodolist.classes.TaskModelClass
 import iut.project.mytodolist.handler.DatabaseHandler
@@ -18,11 +17,53 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Locale.setDefault(Locale.FRANCE)
+
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.todo -> {
+                    addIncludeLayoutContent(findViewById<View>(R.id.content_main))
+                    true
+                }
+                R.id.late -> {
+                    addIncludeLayoutContent(findViewById<View>(R.id.content_late))
+                    true
+                }
+                R.id.done -> {
+                    addIncludeLayoutContent(findViewById<View>(R.id.content_done))
+                    true
+                }
+                R.id.settings -> {
+                    addIncludeLayoutContent(findViewById<View>(R.id.content_settings))
+                    true
+                }
+                else -> false
+            }
+        }
+
+        // Définit la vue par défaut
+        addIncludeLayoutContent(findViewById<View>(R.id.content_main))
     }
+
+    private fun addIncludeLayoutContent(layoutId: View) {
+        // Supprimer toutes les vues du layout principal
+        findViewById<View>(R.id.content_main).visibility = View.GONE
+        findViewById<View>(R.id.content_late).visibility = View.GONE
+        findViewById<View>(R.id.content_done).visibility = View.GONE
+        findViewById<View>(R.id.content_settings).visibility = View.GONE
+        // Rend visible le layout sélectionné
+        layoutId.visibility = View.VISIBLE
+
+    }
+
+
+
+
 
     override fun onStart() {
         super.onStart()

@@ -4,9 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/activity_main"
     tools:context=".MainActivity">
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/content_main"
+        android:id="@+id/content_main"
+        android:visibility="gone"/>
+    <include layout="@layout/content_late"
+        android:id="@+id/content_late"
+        android:visibility="gone"/>
+    <include layout="@layout/content_done"
+        android:id="@+id/content_done"
+        android:visibility="gone"/>
+    <include layout="@layout/content_settings"
+        android:id="@+id/content_settings"
+        android:visibility="gone"/>
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottom_app_bar"
