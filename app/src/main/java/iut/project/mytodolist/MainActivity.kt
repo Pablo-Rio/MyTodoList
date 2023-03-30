@@ -82,22 +82,27 @@ class MainActivity : AppCompatActivity() {
         val taskArrayDescription = Array<String>(task.size) { "null" }
         val taskArrayDate = Array<String>(task.size) { "0" }
         var index = 0
-        for (tas in task) {
-            taskArrayId[index] = tas.taskId.toString()
-            taskArrayName[index] = tas.taskName
-            taskArrayDescription[index] = tas.taskDescription
-            taskArrayDate[index] = tas.taskDate.toString()
-            index++
+
+        val main = findViewById<View>(R.id.content_main).visibility
+
+        if (main == View.VISIBLE) {
+            for (tas in task) {
+                taskArrayId[index] = tas.taskId.toString()
+                taskArrayName[index] = tas.taskName
+                taskArrayDescription[index] = tas.taskDescription
+                taskArrayDate[index] = tas.taskDate.toString()
+                index++
+            }
+            //creating custom ArrayAdapter
+            val myListAdapter = MyListAdapter(
+                this,
+                taskArrayId,
+                taskArrayName,
+                taskArrayDescription,
+                taskArrayDate
+            )
+            findViewById<ListView>(R.id.listView).adapter = myListAdapter
         }
-        //creating custom ArrayAdapter
-        val myListAdapter = MyListAdapter(
-            this,
-            taskArrayId,
-            taskArrayName,
-            taskArrayDescription,
-            taskArrayDate
-        )
-        findViewById<ListView>(R.id.listView).adapter = myListAdapter
     }
 
     //method for updating records based on user id
