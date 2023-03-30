@@ -49,9 +49,7 @@
             android:layout_height="wrap_content"
             android:text="@string/update"
             android:onClick="updateRecord"
-            android:contentDescription=""
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"/>
+            android:contentDescription="" />
 
         <Button
             android:id="@+id/deleteButton"
@@ -59,8 +57,6 @@
             android:layout_height="wrap_content"
             android:text="@string/delete"
             android:onClick="deleteRecord"
-            android:contentDescription=""
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"/>
+            android:contentDescription="" />
     </LinearLayout>
 </LinearLayout>
