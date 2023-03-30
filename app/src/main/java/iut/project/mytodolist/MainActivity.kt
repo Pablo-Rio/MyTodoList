@@ -11,8 +11,12 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import iut.project.mytodolist.adapter.MyListAdapter
+import iut.project.mytodolist.adapter.MyListLateAdapter
 import iut.project.mytodolist.classes.TaskModelClass
 import iut.project.mytodolist.handler.DatabaseHandler
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.*
 
 
@@ -58,22 +62,20 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.content_settings).visibility = View.GONE
         // Rend visible le layout sélectionné
         layoutId.visibility = View.VISIBLE
+        viewRecord()
 
     }
 
 
-
-
-
     override fun onStart() {
         super.onStart()
-        viewRecord(this.findViewById(R.id.listView))
+        viewRecord()
     }
 
     private val EMPTY_TEXT = "Nom ou description ne peuvent pas êtres vides"
 
     //method for read records from database in ListView
-    fun viewRecord(view: View) {
+    fun viewRecord() {
         //creating the instance of DatabaseHandler class
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
         val task: List<TaskModelClass> = databaseHandler.viewTask()
@@ -81,28 +83,76 @@ class MainActivity : AppCompatActivity() {
         val taskArrayName = Array<String>(task.size) { "null" }
         val taskArrayDescription = Array<String>(task.size) { "null" }
         val taskArrayDate = Array<String>(task.size) { "0" }
-        var index = 0
 
         val main = findViewById<View>(R.id.content_main).visibility
+        val late = findViewById<View>(R.id.content_late).visibility
 
         if (main == View.VISIBLE) {
+            val taskArrayId = mutableListOf<String>()
+            val taskArrayName = mutableListOf<String>()
+            val taskArrayDescription = mutableListOf<String>()
+            val taskArrayDate = mutableListOf<String>()
+
+            val currentDate = LocalDate.now()
+
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
             for (tas in task) {
-                taskArrayId[index] = tas.taskId.toString()
-                taskArrayName[index] = tas.taskName
-                taskArrayDescription[index] = tas.taskDescription
-                taskArrayDate[index] = tas.taskDate.toString()
-                index++
+                var taskDate = LocalDate.now()
+                if (tas.taskDate.isNotEmpty()) {
+                    taskDate = sdf.parse(tas.taskDate).toInstant().atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                }
+                println(taskDate)
+                if (taskDate.isAfter(currentDate) || taskDate.isEqual(currentDate) || tas.taskDate.isEmpty()) {
+                    taskArrayId.add(tas.taskId.toString())
+                    taskArrayName.add(tas.taskName)
+                    taskArrayDescription.add(tas.taskDescription)
+                    taskArrayDate.add(tas.taskDate)
+                }
             }
             //creating custom ArrayAdapter
             val myListAdapter = MyListAdapter(
                 this,
-                taskArrayId,
-                taskArrayName,
-                taskArrayDescription,
-                taskArrayDate
+                taskArrayId.toTypedArray(),
+                taskArrayName.toTypedArray(),
+                taskArrayDescription.toTypedArray(),
+                taskArrayDate.toTypedArray()
             )
             findViewById<ListView>(R.id.listView).adapter = myListAdapter
         }
+        if (late == View.VISIBLE) {
+            val taskArrayId = mutableListOf<String>()
+            val taskArrayName = mutableListOf<String>()
+            val taskArrayDescription = mutableListOf<String>()
+            val taskArrayDate = mutableListOf<String>()
+
+            val currentDate = LocalDate.now()
+
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
+            for (tas in task) {
+                if (tas.taskDate.isNotEmpty()) {
+                    val taskDate = sdf.parse(tas.taskDate).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                    if (taskDate.isBefore(currentDate)) {
+                        taskArrayId.add(tas.taskId.toString())
+                        taskArrayName.add(tas.taskName)
+                        taskArrayDescription.add(tas.taskDescription)
+                        taskArrayDate.add(tas.taskDate)
+                    }
+                }
+            }
+
+            //creating custom ArrayAdapter
+            val myListAdapter = MyListAdapter(
+                this,
+                taskArrayId.toTypedArray(),
+                taskArrayName.toTypedArray(),
+                taskArrayDescription.toTypedArray(),
+                taskArrayDate.toTypedArray()
+            )
+            findViewById<ListView>(R.id.listLateView).adapter = myListAdapter
+        }
+
+
     }
 
     //method for updating records based on user id
@@ -173,7 +223,7 @@ class MainActivity : AppCompatActivity() {
                 if (status > -1) {
                     Toast.makeText(applicationContext, "Modification réussie", Toast.LENGTH_LONG)
                         .show()
-                    viewRecord(this.findViewById(R.id.listView))
+                    viewRecord()
                 }
             } else {
                 Toast.makeText(applicationContext, EMPTY_TEXT, Toast.LENGTH_LONG).show()
@@ -203,7 +253,7 @@ class MainActivity : AppCompatActivity() {
         )
         if (status > -1) {
             Toast.makeText(applicationContext, "Tâche terminée, Bravo !", Toast.LENGTH_LONG).show()
-            viewRecord(this.findViewById(R.id.listView))
+            viewRecord()
         }
     }
 
