@@ -1,58 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/layoutRow"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/layoutRow">
-
-    <TextView
-        android:id="@+id/textViewId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
-
-    <TextView
-        android:id="@+id/textViewName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:contentDescription="" />
-
-    <TextView
-        android:id="@+id/textViewDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:contentDescription="" />
-
-    <TextView
-        android:id="@+id/textViewDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:contentDescription="" />
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0sp"
-        android:orientation="horizontal"
-        android:layout_gravity="center">
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/editButton"
+        <LinearLayout
+            android:layout_width="730dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/textViewName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription=""
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription=""
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+            <TextView
+                android:id="@+id/textViewDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription=""
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginTop="0sp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/editButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription=""
+                    android:onClick="updateRecord"
+                    android:text="@string/update" />
+
+                <Button
+                    android:id="@+id/deleteButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription=""
+                    android:onClick="deleteRecord"
+                    android:text="@string/delete" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/checkboxDone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/update"
-            android:onClick="updateRecord"
-            android:contentDescription="" />
+            android:contentDescription=""
+            android:layout_gravity="center" />
 
-        <Button
-            android:id="@+id/deleteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/delete"
-            android:onClick="deleteRecord"
-            android:contentDescription="" />
     </LinearLayout>
 </LinearLayout>
