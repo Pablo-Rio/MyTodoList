@@ -17,6 +17,7 @@ import iut.project.mytodolist.handler.DatabaseHandler
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -93,23 +94,23 @@ class MainActivity : AppCompatActivity() {
             val taskArrayDescription = mutableListOf<String>()
             val taskArrayDate = mutableListOf<String>()
 
-            val currentDate = LocalDate.now()
+            val currentDate = Date()
 
             val sdf = SimpleDateFormat("dd/MM/yyyy")
+            val dateString = sdf.format(currentDate)
             for (tas in task) {
-                var taskDate = LocalDate.now()
+                var taskDate = Date()
                 if (tas.taskDate.isNotEmpty()) {
-                    taskDate = sdf.parse(tas.taskDate).toInstant().atZone(ZoneId.systemDefault())
-                        .toLocalDate()
+                    taskDate = sdf.parse(tas.taskDate)
                 }
-                println(taskDate)
-                if (taskDate.isAfter(currentDate) || taskDate.isEqual(currentDate) || tas.taskDate.isEmpty()) {
+                if (taskDate.after(currentDate) || taskDate.equals(currentDate) || tas.taskDate.isEmpty()) {
                     taskArrayId.add(tas.taskId.toString())
                     taskArrayName.add(tas.taskName)
                     taskArrayDescription.add(tas.taskDescription)
                     taskArrayDate.add(tas.taskDate)
                 }
             }
+
             //creating custom ArrayAdapter
             val myListAdapter = MyListAdapter(
                 this,
@@ -126,13 +127,14 @@ class MainActivity : AppCompatActivity() {
             val taskArrayDescription = mutableListOf<String>()
             val taskArrayDate = mutableListOf<String>()
 
-            val currentDate = LocalDate.now()
+            val currentDate = Date()
 
             val sdf = SimpleDateFormat("dd/MM/yyyy")
             for (tas in task) {
+                var taskDate = Date()
                 if (tas.taskDate.isNotEmpty()) {
-                    val taskDate = sdf.parse(tas.taskDate).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-                    if (taskDate.isBefore(currentDate)) {
+                    taskDate = sdf.parse(tas.taskDate)
+                    if (taskDate.before(currentDate)) {
                         taskArrayId.add(tas.taskId.toString())
                         taskArrayName.add(tas.taskName)
                         taskArrayDescription.add(tas.taskDescription)
