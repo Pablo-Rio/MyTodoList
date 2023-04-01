@@ -19,6 +19,7 @@ class DatabaseHandler(context: Context) :
         private val KEY_NAME = "name"
         private val KEY_DESCRIPTION = "description"
         private val KEY_DATE = "date"
+        private val KEY_DONE = "done"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -27,7 +28,8 @@ class DatabaseHandler(context: Context) :
                 + "$KEY_ID INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "$KEY_NAME TEXT, "
                 + "$KEY_DESCRIPTION TEXT, "
-                + "$KEY_DATE TEXT)")
+                + "$KEY_DATE TEXT, "
+                + "$KEY_DONE INTEGER)")
         db?.execSQL(CREATE_TASKS_TABLE)
     }
 
@@ -43,6 +45,8 @@ class DatabaseHandler(context: Context) :
         contentValues.put(KEY_NAME, task.taskName) // TaskModelClass taskName
         contentValues.put(KEY_DESCRIPTION, task.taskDescription) // TaskModelClass taskDescription
         contentValues.put(KEY_DATE, task.taskDate) // TaskModelClass taskDate
+        contentValues.put(KEY_DONE, task.taskDone) // TaskModelClass taskDone
+
         // Inserting Row
         val success = db.insert(TABLE_TASKS, null, contentValues)
         db.close() // Closing database connection
@@ -65,17 +69,20 @@ class DatabaseHandler(context: Context) :
         var taskName: String
         var taskDescription: String
         var taskDate: String
+        var taskDone: Int
         if (cursor.moveToFirst()) {
             do {
                 taskId = cursor.getInt(cursor.getColumnIndex("id"))
                 taskName = cursor.getString(cursor.getColumnIndex("name"))
                 taskDescription = cursor.getString(cursor.getColumnIndex("description"))
                 taskDate = cursor.getString(cursor.getColumnIndex("date"))
+                taskDone = cursor.getInt(cursor.getColumnIndex("done"))
                 val task = TaskModelClass(
                     taskId = taskId,
                     taskName = taskName,
                     taskDescription = taskDescription,
-                    taskDate = taskDate
+                    taskDate = taskDate,
+                    taskDone = taskDone
                 )
                 taskList.add(task)
             } while (cursor.moveToNext())
@@ -91,6 +98,7 @@ class DatabaseHandler(context: Context) :
         contentValues.put(KEY_NAME, task.taskName) // TaskModelClass taskName
         contentValues.put(KEY_DESCRIPTION, task.taskDescription) // TaskModelClass taskDescription
         contentValues.put(KEY_DATE, task.taskDate) // TaskModelClass taskDate
+        contentValues.put(KEY_DONE, task.taskDone) // TaskModelClass taskDone
         // Updating Row
         val success = db.update(TABLE_TASKS, contentValues, "id=" + task.taskId, null)
         //2nd argument is String containing nullColumnHack

@@ -11,13 +11,9 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import iut.project.mytodolist.adapter.MyListAdapter
-import iut.project.mytodolist.adapter.MyListLateAdapter
 import iut.project.mytodolist.classes.TaskModelClass
 import iut.project.mytodolist.handler.DatabaseHandler
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -50,7 +46,6 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
         // Définit la vue par défaut
         addIncludeLayoutContent(findViewById<View>(R.id.content_main))
     }
@@ -64,9 +59,7 @@ class MainActivity : AppCompatActivity() {
         // Rend visible le layout sélectionné
         layoutId.visibility = View.VISIBLE
         viewRecord()
-
     }
-
 
     override fun onStart() {
         super.onStart()
@@ -87,37 +80,42 @@ class MainActivity : AppCompatActivity() {
 
         val main = findViewById<View>(R.id.content_main).visibility
         val late = findViewById<View>(R.id.content_late).visibility
+        val done = findViewById<View>(R.id.content_done).visibility
+
+        var currentDate = Date()
+        val sdf = SimpleDateFormat("dd/MM/yyyy")
+        val dateString = sdf.format(currentDate)
 
         if (main == View.VISIBLE) {
             val taskArrayId = mutableListOf<String>()
             val taskArrayName = mutableListOf<String>()
             val taskArrayDescription = mutableListOf<String>()
             val taskArrayDate = mutableListOf<String>()
+            val taskArrayCheckbox = mutableListOf<Int>()
 
-            val currentDate = Date()
-
-            val sdf = SimpleDateFormat("dd/MM/yyyy")
-            val dateString = sdf.format(currentDate)
             for (tas in task) {
                 var taskDate = Date()
                 if (tas.taskDate.isNotEmpty()) {
                     taskDate = sdf.parse(tas.taskDate)
                 }
-                if (taskDate.after(currentDate) || taskDate.equals(currentDate) || tas.taskDate.isEmpty()) {
+                println(sdf.format(taskDate) === dateString)
+                if ((tas.taskDate.isEmpty() || taskDate.after(currentDate) || sdf.format(taskDate) == dateString) && tas.taskDone != 1) {
                     taskArrayId.add(tas.taskId.toString())
                     taskArrayName.add(tas.taskName)
                     taskArrayDescription.add(tas.taskDescription)
                     taskArrayDate.add(tas.taskDate)
+                    taskArrayCheckbox.add(tas.taskDone)
                 }
             }
-
             //creating custom ArrayAdapter
             val myListAdapter = MyListAdapter(
                 this,
                 taskArrayId.toTypedArray(),
                 taskArrayName.toTypedArray(),
                 taskArrayDescription.toTypedArray(),
-                taskArrayDate.toTypedArray()
+                taskArrayDate.toTypedArray(),
+                taskArrayCheckbox.toTypedArray(),
+                this
             )
             findViewById<ListView>(R.id.listView).adapter = myListAdapter
         }
@@ -126,20 +124,46 @@ class MainActivity : AppCompatActivity() {
             val taskArrayName = mutableListOf<String>()
             val taskArrayDescription = mutableListOf<String>()
             val taskArrayDate = mutableListOf<String>()
+            val taskArrayCheckbox = mutableListOf<Int>()
 
-            val currentDate = Date()
-
-            val sdf = SimpleDateFormat("dd/MM/yyyy")
             for (tas in task) {
                 var taskDate = Date()
                 if (tas.taskDate.isNotEmpty()) {
                     taskDate = sdf.parse(tas.taskDate)
-                    if (taskDate.before(currentDate)) {
-                        taskArrayId.add(tas.taskId.toString())
-                        taskArrayName.add(tas.taskName)
-                        taskArrayDescription.add(tas.taskDescription)
-                        taskArrayDate.add(tas.taskDate)
-                    }
+                }
+                if (taskDate.before(currentDate) && sdf.format(taskDate) != dateString && tas.taskDone != 1) {
+                    taskArrayId.add(tas.taskId.toString())
+                    taskArrayName.add(tas.taskName)
+                    taskArrayDescription.add(tas.taskDescription)
+                    taskArrayDate.add(tas.taskDate)
+                    taskArrayCheckbox.add(tas.taskDone)
+                }
+            }
+            //creating custom ArrayAdapter
+            val myListAdapter = MyListAdapter(
+                this,
+                taskArrayId.toTypedArray(),
+                taskArrayName.toTypedArray(),
+                taskArrayDescription.toTypedArray(),
+                taskArrayDate.toTypedArray(),
+                taskArrayCheckbox.toTypedArray(),
+                this
+            )
+            findViewById<ListView>(R.id.listLateView).adapter = myListAdapter
+        }
+        if (done == View.VISIBLE) {
+            val taskArrayId = mutableListOf<String>()
+            val taskArrayName = mutableListOf<String>()
+            val taskArrayDescription = mutableListOf<String>()
+            val taskArrayDate = mutableListOf<String>()
+            val taskArrayCheckbox = mutableListOf<Int>()
+            for (tas in task) {
+                if (tas.taskDone == 1) {
+                    taskArrayId.add(tas.taskId.toString())
+                    taskArrayName.add(tas.taskName)
+                    taskArrayDescription.add(tas.taskDescription)
+                    taskArrayDate.add(tas.taskDate)
+                    taskArrayCheckbox.add(tas.taskDone)
                 }
             }
 
@@ -149,9 +173,11 @@ class MainActivity : AppCompatActivity() {
                 taskArrayId.toTypedArray(),
                 taskArrayName.toTypedArray(),
                 taskArrayDescription.toTypedArray(),
-                taskArrayDate.toTypedArray()
+                taskArrayDate.toTypedArray(),
+                taskArrayCheckbox.toTypedArray(),
+                this
             )
-            findViewById<ListView>(R.id.listLateView).adapter = myListAdapter
+            findViewById<ListView>(R.id.listDoneView).adapter = myListAdapter
         }
 
 
@@ -177,7 +203,7 @@ class MainActivity : AppCompatActivity() {
         val description = view.contentDescription.toString().split(",")[2]
         edtDescription.text = Editable.Factory.getInstance().newEditable(description.substring(1))
 
-        val date = view.contentDescription.toString().split(",")[3].substring(1, view.contentDescription.toString().split(",")[3].length - 1)
+        val date = view.contentDescription.toString().split(",")[3].substring(1, view.contentDescription.toString().split(",")[3].length)
         if (date == "") {
             edtDate.visibility = View.GONE
         } else {
@@ -195,7 +221,7 @@ class MainActivity : AppCompatActivity() {
 
             val updateName = edtName.text.toString()
             val updateDescription = edtDescription.text.toString()
-            val updateDate: String
+            var updateDate: String
             if (edtDate.visibility == View.VISIBLE) {
                 val updateDay = edtDate.dayOfMonth
                 val updateMonth = edtDate.month + 1
@@ -205,6 +231,11 @@ class MainActivity : AppCompatActivity() {
                     "$updateDay/0$updateMonth/$updateYear"
                 }  else {
                     "$updateDay/$updateMonth/$updateYear"
+                }
+                updateDate = if (updateDay < 10) {
+                    "0$updateDate"
+                }  else {
+                    "$updateDate"
                 }
             } else {
                 updateDate = ""
@@ -219,7 +250,8 @@ class MainActivity : AppCompatActivity() {
                         Integer.parseInt(id.substring(1, id.length)),
                         updateName,
                         updateDescription,
-                        updateDate
+                        updateDate,
+                        0
                     )
                 )
                 if (status > -1) {
@@ -239,7 +271,6 @@ class MainActivity : AppCompatActivity() {
         b.show()
     }
 
-
     //method for deleting records based on id
     fun deleteRecord(view: View) {
         val id = view.contentDescription.toString()
@@ -250,11 +281,12 @@ class MainActivity : AppCompatActivity() {
                 Integer.parseInt(id),
                 "",
                 "",
-                ""
+                "",
+                0
             )
         )
         if (status > -1) {
-            Toast.makeText(applicationContext, "Tâche terminée, Bravo !", Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, "Suppression réussie", Toast.LENGTH_LONG).show()
             viewRecord()
         }
     }

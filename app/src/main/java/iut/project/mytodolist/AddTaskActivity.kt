@@ -35,10 +35,15 @@ class AddTaskActivity : AppCompatActivity() {
         val month = findViewById<DatePicker>(R.id.t_date).month + 1
         val year = findViewById<DatePicker>(R.id.t_date).year
 
-        val date = if (month < 10) {
+        var date = if (month < 10) {
             "$day/0$month/$year"
         }  else {
             "$day/$month/$year"
+        }
+        date = if (day < 10) {
+            "0$date"
+        } else {
+            date
         }
 
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
@@ -51,7 +56,8 @@ class AddTaskActivity : AppCompatActivity() {
                     idCounter++,
                     name,
                     description,
-                    if (noDate) "" else date
+                    if (noDate) "" else date,
+                    0
                 )
             )
             if (status > -1) {
