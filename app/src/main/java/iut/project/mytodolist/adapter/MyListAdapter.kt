@@ -1,12 +1,15 @@
 package iut.project.mytodolist.adapter
 
 import android.app.Activity
+import android.content.res.Configuration
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import iut.project.mytodolist.MainActivity
 import iut.project.mytodolist.R
 import iut.project.mytodolist.classes.TaskModelClass
@@ -26,8 +29,17 @@ class MyListAdapter(
         val inflater = context.layoutInflater
         val rowView = inflater.inflate(R.layout.custom_list, null, true)
 
-        val boutonDelete = rowView.findViewById(R.id.deleteButton) as Button
-        val boutonEdit = rowView.findViewById(R.id.editButton) as Button
+        val boutonDelete = rowView.findViewById(R.id.deleteButton) as ImageView
+        val boutonEdit = rowView.findViewById(R.id.editButton) as ImageView
+
+
+        if (isDarkTheme()) {
+            val color = ContextCompat.getColor(mainActivity, R.color.imageSombre)
+            boutonEdit.setColorFilter(color)
+        } else {
+            val color = ContextCompat.getColor(mainActivity, R.color.imageClair)
+            boutonEdit.setColorFilter(color)
+        }
 
         val idText = rowView.findViewById(R.id.textViewId) as TextView
         val nameText = rowView.findViewById(R.id.textViewName) as TextView
@@ -70,5 +82,10 @@ class MyListAdapter(
         boutonEdit.contentDescription = taskList.toString()
 
         return rowView
+    }
+
+    fun isDarkTheme(): Boolean {
+        val nightMode = mainActivity.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return nightMode == Configuration.UI_MODE_NIGHT_YES
     }
 }
