@@ -313,10 +313,31 @@ class MainActivity : AppCompatActivity() {
         val id = view.contentDescription.toString()
         //creating the instance of DatabaseHandler class
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
-        val alertDialogBuilder = AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle("Confirmation")
-        alertDialogBuilder.setMessage("Êtes-vous sûr de vouloir supprimer cette tâche ?")
-        alertDialogBuilder.setPositiveButton("Supprimer") { dialog, which ->
+        val done = findViewById<View>(R.id.content_done).visibility == View.VISIBLE
+        if (!done) {
+            val alertDialogBuilder = AlertDialog.Builder(this)
+            alertDialogBuilder.setTitle("Confirmation")
+            alertDialogBuilder.setMessage("Êtes-vous sûr de vouloir supprimer cette tâche ?")
+            alertDialogBuilder.setPositiveButton("Supprimer") { dialog, which ->
+                val status = databaseHandler.deleteTask(
+                    TaskModelClass(
+                        Integer.parseInt(id),
+                        "",
+                        "",
+                        "",
+                        0
+                    )
+                )
+                if (status > -1) {
+                    Toast.makeText(applicationContext, "Suppression réussie", Toast.LENGTH_LONG)
+                        .show()
+                    viewRecord()
+                }
+            }
+            alertDialogBuilder.setNegativeButton("Annuler   ") { dialog, which -> }
+            val alertDialog: AlertDialog = alertDialogBuilder.create()
+            alertDialog.show()
+        } else {
             val status = databaseHandler.deleteTask(
                 TaskModelClass(
                     Integer.parseInt(id),
@@ -327,13 +348,11 @@ class MainActivity : AppCompatActivity() {
                 )
             )
             if (status > -1) {
-                Toast.makeText(applicationContext, "Suppression réussie", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "Suppression réussie", Toast.LENGTH_LONG)
+                    .show()
                 viewRecord()
             }
         }
-        alertDialogBuilder.setNegativeButton("Annuler   ") { dialog, which -> }
-        val alertDialog: AlertDialog = alertDialogBuilder.create()
-        alertDialog.show()
 
     }
 

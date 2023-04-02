@@ -17,6 +17,7 @@ import iut.project.mytodolist.handler.DatabaseHandler
 import nl.dionsegijn.konfetti.core.Party
 import nl.dionsegijn.konfetti.core.Position
 import nl.dionsegijn.konfetti.core.emitter.Emitter
+import nl.dionsegijn.konfetti.core.models.Size
 import nl.dionsegijn.konfetti.xml.KonfettiView
 import java.util.concurrent.TimeUnit
 
@@ -38,6 +39,11 @@ class MyListAdapter(
 
         val boutonDelete = rowView.findViewById(R.id.deleteButton) as ImageView
         val boutonEdit = rowView.findViewById(R.id.editButton) as ImageView
+
+        val done = mainActivity.findViewById<View>(R.id.content_done).visibility
+        if (done == View.VISIBLE) {
+            boutonEdit.visibility = View.GONE
+        }
 
 
         if (isDarkTheme()) {
@@ -61,7 +67,8 @@ class MyListAdapter(
             speed = 0f,
             maxSpeed = 35f,
             damping = 0.9f,
-            spread = 600,
+            spread = 360,
+            size = List<Size>(1) { Size.LARGE },
             colors = listOf(0x73D5FF, 0xED6923, 0xB8EAFF, 0xFFDD00),
             position = Position.Relative(0.5, 0.3),
             emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(100)
