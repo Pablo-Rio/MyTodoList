@@ -66,6 +66,16 @@ class MainActivity : AppCompatActivity() {
         viewRecord()
     }
 
+    fun getDate(offset: Int): String {
+        val currentDate = Calendar.getInstance()
+        currentDate.add(Calendar.DAY_OF_MONTH, offset)
+        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        return sdf.format(currentDate.time)
+    }
+    val tomorrowDate = getDate(1)
+    val todayDate = getDate(0)
+    val yesterdayDate = getDate(-1)
+
     private val EMPTY_TEXT = "Nom ou description ne peuvent pas êtres vides"
 
     //method for read records from database in ListView
@@ -73,10 +83,6 @@ class MainActivity : AppCompatActivity() {
         //creating the instance of DatabaseHandler class
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
         val task: List<TaskModelClass> = databaseHandler.viewTask()
-        val taskArrayId = Array<String>(task.size) { "0" }
-        val taskArrayName = Array<String>(task.size) { "null" }
-        val taskArrayDescription = Array<String>(task.size) { "null" }
-        val taskArrayDate = Array<String>(task.size) { "0" }
 
         val main = findViewById<View>(R.id.content_main).visibility
         val late = findViewById<View>(R.id.content_late).visibility
@@ -86,18 +92,19 @@ class MainActivity : AppCompatActivity() {
         val sdf = SimpleDateFormat("dd/MM/yyyy")
         val dateString = sdf.format(currentDate)
 
-        if (main == View.VISIBLE) {
-            val taskArrayId = mutableListOf<String>()
-            val taskArrayName = mutableListOf<String>()
-            val taskArrayDescription = mutableListOf<String>()
-            val taskArrayDate = mutableListOf<String>()
-            val taskArrayCheckbox = mutableListOf<Int>()
+        val taskArrayId = mutableListOf<String>()
+        val taskArrayName = mutableListOf<String>()
+        val taskArrayDescription = mutableListOf<String>()
+        val taskArrayDate = mutableListOf<String>()
+        val taskArrayCheckbox = mutableListOf<Int>()
 
+        if (main == View.VISIBLE) {
             for (tas in task) {
                 var taskDate = Date()
                 if (tas.taskDate.isNotEmpty()) {
                     taskDate = sdf.parse(tas.taskDate)
                 }
+
                 println(sdf.format(taskDate) === dateString)
                 if ((tas.taskDate.isEmpty() || taskDate.after(currentDate) || sdf.format(taskDate) == dateString) && tas.taskDone != 1) {
                     taskArrayId.add(tas.taskId.toString())
@@ -107,6 +114,8 @@ class MainActivity : AppCompatActivity() {
                     taskArrayCheckbox.add(tas.taskDone)
                 }
             }
+
+
             //creating custom ArrayAdapter
             val myListAdapter = MyListAdapter(
                 this,
@@ -120,12 +129,6 @@ class MainActivity : AppCompatActivity() {
             findViewById<ListView>(R.id.listView).adapter = myListAdapter
         }
         if (late == View.VISIBLE) {
-            val taskArrayId = mutableListOf<String>()
-            val taskArrayName = mutableListOf<String>()
-            val taskArrayDescription = mutableListOf<String>()
-            val taskArrayDate = mutableListOf<String>()
-            val taskArrayCheckbox = mutableListOf<Int>()
-
             for (tas in task) {
                 var taskDate = Date()
                 if (tas.taskDate.isNotEmpty()) {
@@ -152,11 +155,6 @@ class MainActivity : AppCompatActivity() {
             findViewById<ListView>(R.id.listLateView).adapter = myListAdapter
         }
         if (done == View.VISIBLE) {
-            val taskArrayId = mutableListOf<String>()
-            val taskArrayName = mutableListOf<String>()
-            val taskArrayDescription = mutableListOf<String>()
-            val taskArrayDate = mutableListOf<String>()
-            val taskArrayCheckbox = mutableListOf<Int>()
             for (tas in task) {
                 if (tas.taskDone == 1) {
                     taskArrayId.add(tas.taskId.toString())
@@ -166,7 +164,6 @@ class MainActivity : AppCompatActivity() {
                     taskArrayCheckbox.add(tas.taskDone)
                 }
             }
-
             //creating custom ArrayAdapter
             val myListAdapter = MyListAdapter(
                 this,
@@ -179,8 +176,6 @@ class MainActivity : AppCompatActivity() {
             )
             findViewById<ListView>(R.id.listDoneView).adapter = myListAdapter
         }
-
-
     }
 
     //method for updating records based on user id
@@ -295,4 +290,23 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, AddTaskActivity::class.java)
         startActivity(intent)
     }
+
+    fun formatDate(s: String): CharSequence? {
+        val parts = s.split("/")
+        if (parts.size != 3) return null // la chaîne ne correspond pas au format "jj/mm/aaaa"
+
+        val day = parts[0].toIntOrNull() ?: return null // conversion du jour en entier, null si la conversion échoue
+        val month = parts[1].toIntOrNull()?.minus(1) ?: return null // conversion du mois en entier et soustraction de 1 pour correspondre aux indices de 0 à 11, null si la conversion échoue
+        val year = parts[2].toIntOrNull() ?: return null // conversion de l'année en entier, null si la conversion échoue
+
+        val monthNames = arrayOf(
+            "janvier", "février", "mars", "avril", "mai", "juin",
+            "juillet", "août", "septembre", "octobre", "novembre", "décembre"
+        )
+
+        val monthName = monthNames.getOrNull(month) ?: return null // récupération du nom du mois, null si l'indice ne correspond pas à un mois
+
+        return String.format("%2d %s", day, monthName)
+    }
+
 }

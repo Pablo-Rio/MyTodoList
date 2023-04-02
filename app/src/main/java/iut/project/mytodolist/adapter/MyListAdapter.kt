@@ -41,6 +41,7 @@ class MyListAdapter(
             boutonEdit.setColorFilter(color)
         }
 
+        val title = rowView.findViewById(R.id.textTitle) as TextView
         val idText = rowView.findViewById(R.id.textViewId) as TextView
         val nameText = rowView.findViewById(R.id.textViewName) as TextView
         val descriptionText = rowView.findViewById(R.id.textViewDescription) as TextView
@@ -64,9 +65,22 @@ class MyListAdapter(
             mainActivity.viewRecord()
         }
 
+        dateText.visibility = View.GONE
+        if (taskDate[position] == mainActivity.yesterdayDate) {
+            title.text = "Hier"
+        } else if (taskDate[position] == mainActivity.todayDate) {
+            title.text = "Aujourd'hui"
+        } else if (taskDate[position] == mainActivity.tomorrowDate) {
+            title.text = "Demain"
+        } else if (taskDate[position] == "") {
+            title.text = "Sans date"
+        } else {
+            title.text = mainActivity.formatDate(taskDate[position])
+        }
+
         idText.text = "id: ${taskId[position]}"
-        nameText.text = "Titre: ${taskName[position]}"
-        descriptionText.text = "Description: ${taskDescription[position]}"
+        nameText.text = "${taskName[position]}"
+        descriptionText.text = "${taskDescription[position]}"
         dateText.text = "Date: ${taskDate[position]}"
 
         // Liste qui contient l'id, le nom, la description et la date de la tâche
