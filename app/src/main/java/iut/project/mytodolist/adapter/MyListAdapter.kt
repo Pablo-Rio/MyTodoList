@@ -78,6 +78,15 @@ class MyListAdapter(
             title.text = mainActivity.formatDate(taskDate[position])
         }
 
+        // Si le titre de la tache précédente est différent du titre de la tache actuelle, on affiche le titre
+        if (position > 0) {
+            if (taskDate[position - 1] != taskDate[position]) {
+                title.visibility = View.VISIBLE
+            } else {
+                title.visibility = View.GONE
+            }
+        }
+
         idText.text = "id: ${taskId[position]}"
         nameText.text = "${taskName[position]}"
         descriptionText.text = "${taskDescription[position]}"

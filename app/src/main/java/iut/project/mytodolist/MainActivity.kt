@@ -91,6 +91,7 @@ class MainActivity : AppCompatActivity() {
         var currentDate = Date()
         val sdf = SimpleDateFormat("dd/MM/yyyy")
         val dateString = sdf.format(currentDate)
+        val maxDate = sdf.parse("31/12/9999")
 
         val taskArrayId = mutableListOf<String>()
         val taskArrayName = mutableListOf<String>()
@@ -104,8 +105,6 @@ class MainActivity : AppCompatActivity() {
                 if (tas.taskDate.isNotEmpty()) {
                     taskDate = sdf.parse(tas.taskDate)
                 }
-
-                println(sdf.format(taskDate) === dateString)
                 if ((tas.taskDate.isEmpty() || taskDate.after(currentDate) || sdf.format(taskDate) == dateString) && tas.taskDone != 1) {
                     taskArrayId.add(tas.taskId.toString())
                     taskArrayName.add(tas.taskName)
@@ -114,8 +113,21 @@ class MainActivity : AppCompatActivity() {
                     taskArrayCheckbox.add(tas.taskDone)
                 }
             }
-
-
+            // Trie les tâches par date
+            taskArrayId.indices.forEach { i ->
+                for (j in i + 1 until taskArrayId.size) {
+                    val dateI = if (taskArrayDate[i].isNotEmpty()) sdf.parse(taskArrayDate[i]) else maxDate
+                    val dateJ = if (taskArrayDate[j].isNotEmpty()) sdf.parse(taskArrayDate[j]) else maxDate
+                    if (dateI.after(dateJ)) {
+                        // Swap les éléments
+                        Collections.swap(taskArrayId, i, j)
+                        Collections.swap(taskArrayName, i, j)
+                        Collections.swap(taskArrayDescription, i, j)
+                        Collections.swap(taskArrayDate, i, j)
+                        Collections.swap(taskArrayCheckbox, i, j)
+                    }
+                }
+            }
             //creating custom ArrayAdapter
             val myListAdapter = MyListAdapter(
                 this,
@@ -142,6 +154,21 @@ class MainActivity : AppCompatActivity() {
                     taskArrayCheckbox.add(tas.taskDone)
                 }
             }
+            // Trie les tâches par date
+            taskArrayId.indices.forEach { i ->
+                for (j in i + 1 until taskArrayId.size) {
+                    val dateI = if (taskArrayDate[i].isNotEmpty()) sdf.parse(taskArrayDate[i]) else maxDate
+                    val dateJ = if (taskArrayDate[j].isNotEmpty()) sdf.parse(taskArrayDate[j]) else maxDate
+                    if (dateI.after(dateJ)) {
+                        // Swap les éléments
+                        Collections.swap(taskArrayId, i, j)
+                        Collections.swap(taskArrayName, i, j)
+                        Collections.swap(taskArrayDescription, i, j)
+                        Collections.swap(taskArrayDate, i, j)
+                        Collections.swap(taskArrayCheckbox, i, j)
+                    }
+                }
+            }
             //creating custom ArrayAdapter
             val myListAdapter = MyListAdapter(
                 this,
@@ -162,6 +189,21 @@ class MainActivity : AppCompatActivity() {
                     taskArrayDescription.add(tas.taskDescription)
                     taskArrayDate.add(tas.taskDate)
                     taskArrayCheckbox.add(tas.taskDone)
+                }
+            }
+            // Trie les tâches par date
+            taskArrayId.indices.forEach { i ->
+                for (j in i + 1 until taskArrayId.size) {
+                    val dateI = if (taskArrayDate[i].isNotEmpty()) sdf.parse(taskArrayDate[i]) else maxDate
+                    val dateJ = if (taskArrayDate[j].isNotEmpty()) sdf.parse(taskArrayDate[j]) else maxDate
+                    if (dateI.after(dateJ)) {
+                        // Swap les éléments
+                        Collections.swap(taskArrayId, i, j)
+                        Collections.swap(taskArrayName, i, j)
+                        Collections.swap(taskArrayDescription, i, j)
+                        Collections.swap(taskArrayDate, i, j)
+                        Collections.swap(taskArrayCheckbox, i, j)
+                    }
                 }
             }
             //creating custom ArrayAdapter
