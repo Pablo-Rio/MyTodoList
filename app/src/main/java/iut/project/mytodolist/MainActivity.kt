@@ -313,19 +313,28 @@ class MainActivity : AppCompatActivity() {
         val id = view.contentDescription.toString()
         //creating the instance of DatabaseHandler class
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
-        val status = databaseHandler.deleteTask(
-            TaskModelClass(
-                Integer.parseInt(id),
-                "",
-                "",
-                "",
-                0
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle("Confirmation")
+        alertDialogBuilder.setMessage("Êtes-vous sûr de vouloir supprimer cette tâche ?")
+        alertDialogBuilder.setPositiveButton("Supprimer") { dialog, which ->
+            val status = databaseHandler.deleteTask(
+                TaskModelClass(
+                    Integer.parseInt(id),
+                    "",
+                    "",
+                    "",
+                    0
+                )
             )
-        )
-        if (status > -1) {
-            Toast.makeText(applicationContext, "Suppression réussie", Toast.LENGTH_LONG).show()
-            viewRecord()
+            if (status > -1) {
+                Toast.makeText(applicationContext, "Suppression réussie", Toast.LENGTH_LONG).show()
+                viewRecord()
+            }
         }
+        alertDialogBuilder.setNegativeButton("Annuler   ") { dialog, which -> }
+        val alertDialog: AlertDialog = alertDialogBuilder.create()
+        alertDialog.show()
+
     }
 
     fun addTaskPage(view: View) {
