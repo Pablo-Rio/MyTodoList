@@ -2,23 +2,35 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_main"
     tools:context=".MainActivity">
 
-    <include layout="@layout/content_main"
+    <nl.dionsegijn.konfetti.xml.KonfettiView
+        android:id="@+id/konfettiView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <include
         android:id="@+id/content_main"
-        android:visibility="gone"/>
-    <include layout="@layout/content_late"
+        layout="@layout/content_main"
+        android:visibility="gone" />
+
+    <include
         android:id="@+id/content_late"
-        android:visibility="gone"/>
-    <include layout="@layout/content_done"
+        layout="@layout/content_late"
+        android:visibility="gone" />
+
+    <include
         android:id="@+id/content_done"
-        android:visibility="gone"/>
-    <include layout="@layout/content_settings"
+        layout="@layout/content_done"
+        android:visibility="gone" />
+
+    <include
         android:id="@+id/content_settings"
-        android:visibility="gone"/>
+        layout="@layout/content_settings"
+        android:visibility="gone" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottom_app_bar"
@@ -45,12 +57,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        app:layout_anchor="@id/bottom_app_bar"
         android:clickable="true"
         android:contentDescription=""
+        android:focusable="true"
         android:onClick="addTaskPage"
         app:backgroundTint="@color/blue"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:focusable="true" />
+        app:layout_anchor="@id/bottom_app_bar"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

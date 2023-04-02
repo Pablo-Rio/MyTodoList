@@ -14,6 +14,11 @@ import iut.project.mytodolist.MainActivity
 import iut.project.mytodolist.R
 import iut.project.mytodolist.classes.TaskModelClass
 import iut.project.mytodolist.handler.DatabaseHandler
+import nl.dionsegijn.konfetti.core.Party
+import nl.dionsegijn.konfetti.core.Position
+import nl.dionsegijn.konfetti.core.emitter.Emitter
+import nl.dionsegijn.konfetti.xml.KonfettiView
+import java.util.concurrent.TimeUnit
 
 class MyListAdapter(
     private val context: Activity,
@@ -24,6 +29,8 @@ class MyListAdapter(
     private val taskDone: Array<Int>,
     private val mainActivity: MainActivity
 ) : ArrayAdapter<String>(context, R.layout.custom_list, taskId) {
+
+    var checkBox: CheckBox? = null
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = context.layoutInflater
@@ -46,13 +53,29 @@ class MyListAdapter(
         val nameText = rowView.findViewById(R.id.textViewName) as TextView
         val descriptionText = rowView.findViewById(R.id.textViewDescription) as TextView
         val dateText = rowView.findViewById(R.id.textViewDate) as TextView
-        val checkBox = rowView.findViewById(R.id.textViewCheckbox) as CheckBox
+        checkBox = rowView.findViewById(R.id.textViewCheckbox) as CheckBox
         // si taskDone est à 1, on coche la checkbox
-        checkBox.isChecked = taskDone[position] == 1
+        checkBox!!.isChecked = taskDone[position] == 1
+
+        val party = Party(
+            speed = 0f,
+            maxSpeed = 35f,
+            damping = 0.9f,
+            spread = 600,
+            colors = listOf(0x73D5FF, 0xED6923, 0xB8EAFF, 0xFFDD00),
+            position = Position.Relative(0.5, 0.3),
+            emitter = Emitter(duration = 100, TimeUnit.MILLISECONDS).max(100)
+        )
+        val konffeti = mainActivity.findViewById<KonfettiView>(R.id.konfettiView)
 
         // Ajout d'un ecouteur sur la checkbox
-        checkBox.setOnCheckedChangeListener { _, isChecked ->
-            taskDone[position] = if (isChecked) 1 else 0
+        checkBox!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                taskDone[position] = 1
+                konffeti.start(party)
+            } else {
+                taskDone[position] = 0
+            }
             val dbHandler = DatabaseHandler(context)
             val task = TaskModelClass(
                 taskId[position].toInt(),
