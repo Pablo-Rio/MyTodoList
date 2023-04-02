@@ -10,6 +10,14 @@
 
     tools:context="iut.project.mytodolist.MainActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top|left"
+        android:text="@string/todo"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:textSize="35dp" />
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="wrap_content"
